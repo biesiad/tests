@@ -15,6 +15,8 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
+    require('./assets/calendar.png')  
+
     try {
       this.setState({ username: (await AsyncStorage.getItem('@Tests:username')) })
       this.setState({ password: (await AsyncStorage.getItem('@Tests:password')) })
