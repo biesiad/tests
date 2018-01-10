@@ -1,8 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View, AsyncStorage, Image } from 'react-native'
-import { Button, TabBarIOS } from 'react-native'
+import { TouchableOpacity, StyleSheet, Text, View, AsyncStorage, Image } from 'react-native'
+
 import Status from './Status'
 import Profile from './Profile'
+
+import registerNotifications from './notifications';
+
 
 export default class App extends React.Component {
   constructor(props){
@@ -15,8 +18,6 @@ export default class App extends React.Component {
   }
 
   async componentDidMount() {
-    require('./assets/calendar.png')  
-
     try {
       this.setState({ username: (await AsyncStorage.getItem('@Tests:username')) })
       this.setState({ password: (await AsyncStorage.getItem('@Tests:password')) })
@@ -25,50 +26,66 @@ export default class App extends React.Component {
     }
 
     this.setState({ tab: this.hasCredentials() ? 'status' : 'profile' })
+    registerNotifications();
   }
 
   hasCredentials() {
     return this.state.username && this.state.password
   }
 
+  renderContent() {
+    if (this.state.tab === 'profile') {
+      return (
+        <Profile
+          username={this.state.username}
+          password={this.state.password}
+          onUsernameChange={(username) => this.setState({ username })}
+          onPasswordChange={(password) => this.setState({ password })}
+        />
+      )
+    } else {
+      return (
+        <Status
+          username={this.state.username}
+          password={this.state.password}
+        />
+      )
+    }
+  }
+
   render() {
     return (
-      <TabBarIOS
-          barTintColor="#DD4D9F"
-          unselectedItemTintColor="#FD6DBF"
-          unselectedTintColor="#FFF"
-          tintColor="#FFF"
-          translucent={false}
-      >
-        <TabBarIOS.Item
-          icon={require('./assets/calendar.png')}
-          selectedIcon={require('./assets/calendar.png')}
-          title=""
-          selected={this.state.tab === 'status'}
-          onPress={() => this.setState({ tab: 'status' })}
-        >
-          <Status
-            username={this.state.username}
-            password={this.state.password}
-          />
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          systemIcon="bookmarks"
-          title=""
-          selected={this.state.tab === 'profile'}
-          onPress={() => this.setState({ tab: 'profile' })}
-        >
-          <Profile
-            username={this.state.username}
-            password={this.state.password}
-            onUsernameChange={(username) => this.setState({ username })}
-            onPasswordChange={(password) => this.setState({ password })}
-          />
-        </TabBarIOS.Item>
-      </TabBarIOS>
+      <View style={styles.container}>
+        {this.renderContent()}
+        <View style={styles.tabBar}>
+          <TouchableOpacity style={styles.tabBarItem} onPress={() => this.setState({ tab: 'status' })}>
+            <Image source={require('./assets/icon_transparent.png')} style={{ width: 40, height: 40, opacity: this.state.tab === 'profile' ? 0.5 : 1 }} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.tabBarItem} onPress={() => this.setState({ tab: 'profile' })}>
+            <Image source={require('./assets/cog_transparent.png')} style={{ width: 32, height: 32, opacity: this.state.tab === 'status' ? 0.5 : 1 }} />
+          </TouchableOpacity >
+        </View>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    backgroundColor: '#FD6DBF',
+  },
+  tabBar: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#DD4D9F',
+    flexDirection: 'row',
+    alignContent: 'center',
+    justifyContent: 'space-around',
+  },
+  tabBarItem: {
+     justifyContent: 'center'
+  },
 })

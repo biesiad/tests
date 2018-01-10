@@ -2,7 +2,6 @@ import React from 'react'
 import { View, StyleSheet, Text, Button, Image, ActivityIndicator } from 'react-native'
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 
-
 export default class Status extends React.Component {
   constructor(props)  {
     super(props)
@@ -17,7 +16,7 @@ export default class Status extends React.Component {
   onUpdate(){
     this.setState({ isLoading: true })
 
-    fetch('https://cfassignment.herokuapp.com/greg/tasks')
+    fetch('https://google.com')
       .then((r) => r.text())
       .then((text) => {
         if (Math.random() > 0.5) {
@@ -61,7 +60,7 @@ export default class Status extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-       {this.state.isLoading ? this.renderLoader() : this.renderContent()}
+        {this.state.isLoading ? this.renderLoader() : this.renderContent()}
       </View>
     )
   }
@@ -69,14 +68,17 @@ export default class Status extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
+    padding: 20,
     flex: 1,
     backgroundColor: '#FD6DBF',
-    alignItems: 'center',
+    // alignContent: 'center',
     justifyContent: 'center',
   },
   test: {
     color: '#FFF',
     textAlign: 'center',
+    marginBottom: 120,
     marginBottom: 120,
     fontSize: 22,
   },

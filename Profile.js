@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, Text, TextInput, AsyncStorage } from 'react-native'
+import { Image, View, StyleSheet, Text, TextInput, AsyncStorage } from 'react-native'
 
 export default class Profile extends React.Component {
   constructor(props)  {
@@ -58,7 +58,18 @@ const styles = StyleSheet.create({
     width: '100%',
     flex: 1,
     padding: 20,
-    justifyContent: 'center',
+    // justifyContent: 'center',
+  },
+  note: {
+    width: '100%',
+    color: '#fff',
+    fontSize: 18,
+    marginTop: 100,
+    marginBottom: 50,
+  },
+  label: {
+    marginBottom: 5,
+    color: 'white',
   },
   input: {
     padding: 10,
@@ -67,15 +78,4 @@ const styles = StyleSheet.create({
     color: '#DD4D9F',
     borderRadius: 5,
   },
-  label: {
-    marginBottom: 5,
-    color: 'white',
-  },
-  note: {
-    width: '100%',
-    // textAlign: 'center',
-    color: '#fff',
-    fontSize: 18,
-    marginBottom: 50,
-  }
 })
